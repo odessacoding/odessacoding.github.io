@@ -1,0 +1,467 @@
+<html>
+
+<head>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
+    <link href="https://fonts.googleapis.com/css?family=Rubik:400,500,700&display=swap" rel="stylesheet">
+
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+    <script src="https://typeiii.github.io/jquery-csv/src/jquery.csv.js"></script>
+
+    <style>
+        body {
+            background-color: #111;
+            font-family: 'Rubik', sans-serif;
+        }
+
+        h1 {
+            color: #FF69EA;
+            font-family: 'Rubik', sans-serif;
+        }
+
+        h2 {
+
+            color: #FF69EA;
+            
+            font-weight: 400;
+        }
+
+        p {
+            color: #aaa;
+            font-size: 18px;
+        }
+
+        canvas {
+            -moz-user-select: none;
+            -webkit-user-select: none;
+            -ms-user-select: none;
+        }
+        .chart-container {
+            width: 900px;
+            max-width: 900px;
+            margin-left: 40px;
+            margin-right: 40px;
+            margin-bottom: 40px;
+        }
+        .my-container {
+            display: flex;
+            flex-direction: row;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .main-container {
+            display: flex;
+            flex-direction: column;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .header-container {
+            width: 900px;
+            max-width: 900px;
+            margin-left: 40px;
+            margin-right: 40px;
+            margin-bottom: 40px;
+        }
+
+        
+    </style>
+
+</head>
+
+<body>
+    
+    <div class="main-container">
+        <div class="header-container">
+            <h1>COVID-19 Cases</h1>
+            <h2>
+                Jan. 22 through Today - China, Italy, Iran, Korea, 
+                South, Spain, Germany, France, Switzerland, Norway, 
+                Sweden, Netherlands, Denmark, United Kingdom, Japan, Cruise Ship, US
+            </h2>
+            <p>
+                All legends (confirmed, deaths and recovered) sorted from greatest to least.
+                <br>
+                These countries were hand-picked by the largest number of cases. Further work
+                should be done to dynamically update this list based on large day-to-day differences, 
+                top 10 confirmed case rates, or any other valuable metric.
+            </p>
+        </div>
+    </div>
+    
+    <div class="my-container">
+        
+
+    </div>
+
+</body>
+<script>
+
+    function getAllCountryDatasets(confirmedCases, deathCases, recoveredCases) {
+        var dataSets = {}
+        for (var key in confirmedCases) {
+            if (confirmedCases.hasOwnProperty(key)) {
+                var confirmObject = {
+                    label: 'Confirmed',
+                    backgroundColor: 'rgba(255,232,41,.7)',
+                    borderColor: 'rgba(200,181,16,.9)',
+                    borderWidth: 2,
+                    data: confirmedCases[key]
+                };
+
+                var deathObject = {
+                    label:  'Deaths',
+                    backgroundColor: 'rgba(207,50,91,.6)',
+                    borderColor: 'rgba(176,57,88,.9)',
+                    borderWidth: 2,
+                    data: deathCases[key]
+                };
+
+                var recoveredObject = {
+                    label:  'Recovered',
+                    backgroundColor: 'rgba(50,207,172, .8)',
+                    borderColor: 'rgba(51,152,129,.9)',
+                    borderWidth: 2,
+                    data: recoveredCases[key]
+                };
+                dataSets[key] = {
+                    recovered: recoveredObject,
+                    deaths: deathObject,
+                    confirmed: confirmObject
+                }
+            }
+        }
+        return dataSets;
+    }
+
+    
+
+    function getSpecificCountryDatasets(confirmedCases, deathCases, recoveredCases, targetCountries) {
+        var dataSets = {}
+        for (var key in confirmedCases) {
+            if (confirmedCases.hasOwnProperty(key) && targetCountries.indexOf(key) > -1) {
+                var confirmObject = {
+                    label: 'Confirmed',
+                    backgroundColor: 'rgba(255,232,41,.7)',
+                    borderColor: 'rgba(200,181,16,.9)',
+                    borderWidth: 2,
+                    data: confirmedCases[key]
+                };
+
+                var deathObject = {
+                    label:  'Deaths',
+                    backgroundColor: 'rgba(207,50,91,.6)',
+                    borderColor: 'rgba(176,57,88,.9)',
+                    borderWidth: 2,
+                    data: deathCases[key]
+                };
+
+                var recoveredObject = {
+                    label:  'Recovered',
+                    backgroundColor: 'rgba(50,207,172, .8)',
+                    borderColor: 'rgba(51,152,129,.9)',
+                    borderWidth: 2,
+                    data: recoveredCases[key]
+                };
+                dataSets[key] = {
+                    recovered: recoveredObject,
+                    deaths: deathObject,
+                    confirmed: confirmObject
+                }
+            }
+        }
+        return dataSets;
+    }
+
+    function generateShadesOfColor(r,g,b,a,color,levels){
+        var colors = [];
+        var comma = ',';
+
+        for(var i = 0; i < levels; ++i) {
+            if(color === 'red') {
+                colors.push('rgba(' + (r+i*10) + comma + (g+i*5) + comma + (b-i*10) + comma + a + ')');
+            } else if(color === 'green') {
+                colors.push('rgba(' + (r-i*20) + comma + (g+i*10) + comma + (b-i*5) + comma + a + ')');
+            } else if(color === 'blue') {
+                colors.push('rgba(' + (r+i*5) + comma + (g-i*10) + comma + (b+i-10) + comma + a + ')');
+            }
+        }
+        
+        return colors;
+        
+    }
+
+    function getSpecificCountryDatasetsNormalized(confirmedCases, deathCases, recoveredCases, targetCountries) {
+        var dataSets = {
+            'confirmed': [],
+            'deaths': [],
+            'recovered': [],
+        }
+
+        var shadesOfRed = generateShadesOfColor(180,50,91,.7, 'red', targetCountries.length);
+        var shadesOfGreen = generateShadesOfColor(50,150,172, .8, 'green', targetCountries.length);
+        var shadesOfBlue = generateShadesOfColor(255,232,150,.7, 'blue', targetCountries.length);
+        var colors = [
+            'rgba(180, 50, 91, .7)',
+            'rgba(280, 150, 191, .7)',
+            'rgba(80, 150, 91, .7)',
+            'rgba(30, 50, 91, .7)',
+            'rgba(55, 50, 231, .7)',
+            'rgba(180, 250, 241, .7)',
+            'rgba(250, 250, 20, .7)',
+            'rgba(180, 0, 91, .7)',
+            'rgba(180, 50, 0, .7)',
+            'rgba(55, 55, 55, .7)',
+            'rgba(100, 100, 100, .7)',
+            'rgba(250, 150, 91, .7)',
+            'rgba(280, 50, 250, .7)',
+            'rgba(75, 50, 75, .7)',
+            'rgba(50, 255, 111, .7)',
+            'rgba(220, 255, 91, .7)',
+        ]
+
+        var index = 0;
+        for (var key in confirmedCases) {
+            if (confirmedCases.hasOwnProperty(key) && targetCountries.indexOf(key) > -1) {
+                var confirmObject = {
+                    label: key,
+                    backgroundColor: colors[index],
+                    fill: false,
+                    borderColor: colors[index],
+                    pointRadius: 1,
+                    borderWidth: 2,
+                    data: confirmedCases[key]
+                };
+
+                var deathObject = {
+                    label: key,
+                    backgroundColor: colors[index],
+                    fill: false,
+                    borderColor: colors[index],
+                    pointRadius: 1,
+                    borderWidth: 2,
+                    data: deathCases[key]
+                };
+
+                var recoveredObject = {
+                    label: key,
+                    backgroundColor: colors[index],
+                    fill: false,
+                    borderColor: colors[index],
+                    pointRadius: 1,
+                    borderWidth: 2,
+                    data: recoveredCases[key]
+                };
+                
+                dataSets.confirmed.push(confirmObject);
+                dataSets.deaths.push(deathObject);
+                dataSets.recovered.push(recoveredObject);
+                index++;
+            }
+        }
+
+        dataSets.confirmed.sort(function(a,b){ 
+            return b.data[b.data.length-1] - a.data[a.data.length-1];
+        });
+
+        dataSets.deaths.sort(function(a,b){ 
+            return b.data[b.data.length-1] - a.data[a.data.length-1];
+        });
+
+        dataSets.recovered.sort(function(a,b){ 
+            return b.data[b.data.length-1] - a.data[a.data.length-1];
+        });
+
+        return dataSets;
+    }
+
+    function drawMyChart(confirmedCases, deathCases, recoveredCases) {
+
+        specifiedCountries = [
+            'US', 'Italy', 'China', 'Iran','Korea, South',
+            'Spain','Germany','France','Switzerland','Norway','Sweden',
+            'Netherlands','Denmark','United Kingdom','Japan','Cruise Ship'
+        ]
+        allDataSets = getSpecificCountryDatasetsNormalized(confirmedCases, deathCases, recoveredCases, specifiedCountries);
+
+        var container = document.querySelector('.my-container');
+        Chart.defaults.global.defaultFontSize = 22;
+
+        
+
+        for (var key in allDataSets) {
+            var div = document.createElement('div');
+            div.classList.add('chart-container');
+
+            var canvas = document.createElement('canvas');
+
+            var h2 = document.createElement('h2');
+            h2.innerHTML = key;
+            
+            div.appendChild(h2);
+            div.appendChild(canvas);
+            container.appendChild(div);
+
+            var ctx = canvas.getContext('2d');
+            
+            new Chart(ctx, {
+                
+                type: 'line',
+
+                // The data for our dataset
+                data: {
+                    labels: dateLabels,
+                    datasets: allDataSets[key]
+                },
+
+                // Configuration options go here
+                options: { 
+                    legend: {
+                        labels: {
+                            fontSize: 22
+                        }
+                    }
+                }
+
+            });
+        }
+    }
+
+
+
+
+
+
+
+
+    // --------------------------------------------------------
+    // Designers ignore everything below!
+    // --------------------------------------------------------
+
+
+
+
+    var confirmedDataFromGithub = '';
+    var dateLabels;
+
+    var confirmedCases;
+    var fatalityCases;
+    var recoveredCases;
+
+    $(document).ready(function () {
+        $.when(
+            $.ajax({
+                type: "GET",
+                url: "https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/time_series_19-covid-Confirmed.csv",
+                dataType: "text",
+                success: function (data) {
+                    confirmedDataFromGithub = data;
+                    dateLabels = getListOfDates(confirmedDataFromGithub);
+                    confirmedCases = getTotalsByCountryFromCSV(data);
+                }
+            }),
+            $.ajax({
+                type: "GET",
+                url: "https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/time_series_19-covid-Deaths.csv",
+                dataType: "text",
+                success: function (data) {
+                    deathDataFromGithub = data;
+                    fatalityCases = getTotalsByCountryFromCSV(data);
+                }
+            }),
+            $.ajax({
+                type: "GET",
+                url: "https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/time_series_19-covid-Recovered.csv",
+                dataType: "text",
+                success: function (data) {
+                    confirmedDataFromGithub = data;
+                    recoveredCases = getTotalsByCountryFromCSV(data);
+                }
+            })
+
+        ).then(function () {
+            drawMyChart(confirmedCases, fatalityCases, recoveredCases);
+        })
+
+
+        function getListOfDates(muhData) {
+            var result = $.csv.toArrays(muhData);
+            var headers = result[0]; // this gets us the first row (aka the headers)
+            var dateLabels = headers.slice(4)
+            return dateLabels;
+        }
+
+        function getSingleRowByCountryName(muhData, nameOfTheCountry) {
+            var result = $.csv.toArrays(muhData); // an array of arrays (or list of lists)
+
+            for (var currentListPosition = 0; currentListPosition < result.length; currentListPosition++) {
+                var theListImLookingAt = result[currentListPosition];
+                if (theListImLookingAt[1] == nameOfTheCountry) {
+                    slicedData = theListImLookingAt.slice(4)
+                    return slicedData;
+                }
+            }
+        }
+
+        function getTotalsByCountryName(muhData, nameOfTheCountry) {
+            var result = muhData;
+
+            var runningTotal = new Array(result[0].length - 4).fill(0);
+
+            for (var currentListPosition = 0; currentListPosition < result.length; currentListPosition++) {
+                var theListImLookingAt = result[currentListPosition];
+                if (theListImLookingAt[1] == nameOfTheCountry) {
+                    slicedData = theListImLookingAt.slice(4)
+                    for (var currentColumnIndex = 0; currentColumnIndex < slicedData.length; currentColumnIndex++) {
+                        runningTotal[currentColumnIndex] = runningTotal[currentColumnIndex] + parseInt(slicedData[currentColumnIndex])
+                    }
+                }
+            }
+
+            return runningTotal;
+        }
+
+        function onlyUnique(value, index, self) {
+            return self.indexOf(value) === index;
+        }
+
+        function getUniqueListOfCountries(muhData) {
+            var result = muhData;
+            var countries = [];
+            var uniqueListOfCountries = [];
+
+            for (var currentListPosition = 0; currentListPosition < result.length; currentListPosition++) {
+                var theListImLookingAt = result[currentListPosition];
+                countries.push(theListImLookingAt[1]);
+            }
+
+            uniqueListOfCountries = countries.filter(onlyUnique);
+            uniqueListOfCountries = uniqueListOfCountries.slice(1);
+            uniqueListOfCountries.sort();
+            return uniqueListOfCountries;
+        }
+
+        function getTotalsByCountryFromCSV(muhData) {
+
+            var csvData = $.csv.toArrays(muhData); // an array of arrays (or list of lists)
+
+            var uniqueCountries = getUniqueListOfCountries(csvData);
+
+            var countryData = {};
+
+            for (var index = 0; index < uniqueCountries.length; index++) {
+                var nameOfCurrentCountry = uniqueCountries[index];
+                var totalForThisCountry = getTotalsByCountryName(csvData, nameOfCurrentCountry);
+
+                countryData[nameOfCurrentCountry] = totalForThisCountry;
+            }
+
+            return countryData;
+
+        }
+
+    });
+
+</script>
+
+</html>
