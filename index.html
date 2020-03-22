@@ -70,7 +70,25 @@
             margin-bottom: 40px;
         }
 
-        
+        .chartjs-tooltip {
+			opacity: 1;
+			position: absolute;
+			background: rgba(255, 0, 0, .7);
+			color: white;
+			border-radius: 3px;
+			-webkit-transition: all .1s ease;
+			transition: all .1s ease;
+			pointer-events: none;
+			-webkit-transform: translate(-50%, 0);
+			transform: translate(-50%, 0);
+			padding: 4px;
+		}
+
+		.chartjs-tooltip-key {
+			display: inline-block;
+			width: 10px;
+			height: 10px;
+		}
     </style>
 
 </head>
@@ -102,7 +120,7 @@
         
 
     </div>
-
+    <div class="chartjs-tooltip" id="tooltip-0"></div>
     <footer>
         <p>
             Data refreshed from CSSE at Johns Hopkins University
@@ -251,8 +269,8 @@
                     backgroundColor: colors[index],
                     fill: false,
                     borderColor: colors[index],
-                    pointRadius: 1,
-                    borderWidth: 2,
+                    pointRadius: 3,
+                    borderWidth: 1,
                     data: confirmedCases[key]
                 };
 
@@ -261,8 +279,8 @@
                     backgroundColor: colors[index],
                     fill: false,
                     borderColor: colors[index],
-                    pointRadius: 1,
-                    borderWidth: 2,
+                    pointRadius: 3,
+                    borderWidth: 1,
                     data: deathCases[key]
                 };
 
@@ -271,8 +289,8 @@
                     backgroundColor: colors[index],
                     fill: false,
                     borderColor: colors[index],
-                    pointRadius: 1,
-                    borderWidth: 2,
+                    pointRadius: 3,
+                    borderWidth: 1,
                     data: recoveredCases[key]
                 };
                 
@@ -326,23 +344,84 @@
             container.appendChild(div);
 
             var ctx = canvas.getContext('2d');
+
+            var myData = {
+                    labels: dateLabels,
+                    datasets: allDataSets[key]
+                };
             
             new Chart(ctx, {
                 
                 type: 'line',
 
                 // The data for our dataset
-                data: {
-                    labels: dateLabels,
-                    datasets: allDataSets[key]
-                },
+                data: myData,
 
                 // Configuration options go here
                 options: { 
+                    responsive: true,
                     legend: {
                         labels: {
                             fontSize: 22
                         }
+                    },
+                    tooltips: {
+                        //mode: 'index',
+                        intersect: false,
+                        callbacks: {
+                            label: function(tooltipItem, data) {
+                                var label = data.datasets[tooltipItem.datasetIndex].label || '';
+                                var value = data.datasets[tooltipItem.datasetIndex].data;
+                                return label + ": " + tooltipItem.yLabel.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+                            },
+                        //     // Use the footer callback to display the sum of the items showing in the tooltip
+                        //     footer: function(tooltipItems, data) {
+                        //         var sum = 0;
+
+                        //         tooltipItems.forEach(function(tooltipItem) {
+                        //             //sum += data.datasets[tooltipItem.datasetIndex].data[tooltipItem.index];
+                        //         });
+                        //         return 'Sum: ' + sum;
+                        //     }
+                        // },
+                        // footerFontStyle: 'normal',
+                        // custom: function(ttModel) {
+                        //     console.log(ttModel);
+                        }
+                        
+                    },
+                    hover: {
+                        // mode: 'index',
+                        intersect: true
+                    },
+                    scales: {
+                        yAxes: [{
+                            display: true,
+                            scaleLabel: {
+                                show: true,
+                                labelString: '#'
+                            },
+                            gridLines: {
+                                drawBorder: false,
+                                color: 'rgba(85,85,85, .4)'
+                            },
+                            ticks: {
+                                callback: function(value, index, values) {
+                                    return value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+                                }
+                            }
+                        }],
+                        xAxes: [{
+                            display: true,
+                            scaleLabel: {
+                                show: true,
+                                labelString: 'Day'
+                            },
+                            gridLines: {
+                                drawBorder: false,
+                                color: 'rgba(85,85,85, .2)'
+                            }
+                        }]
                     }
                 }
 
@@ -427,7 +506,7 @@
                     }
                 }
             }
-
+            
             return runningTotal;
         }
 
