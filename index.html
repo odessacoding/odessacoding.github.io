@@ -16,18 +16,16 @@
             font-family: 'Rubik', sans-serif;
         }
 
-        h1,h2,h3 {
+         span, h1,h2,h3 {
             color: #FF69EA;
             font-family: 'Rubik', sans-serif;
         }
 
-        h2 {
-
-            
+        h2, h3, h4 {
             font-weight: 400;
         }
 
-        p {
+        p, ul, li {
             color: #aaa;
             font-size: 18px;
         }
@@ -113,6 +111,9 @@
                 should be done to dynamically update this list based on large day-to-day differences, 
                 top 10 confirmed case rates, or any other valuable metric.
             </p>
+            <p>
+                <a href="#changelog">Change Log</a>
+            </p>
         </div>
     </div>
     
@@ -120,8 +121,10 @@
         
 
     </div>
-    <div class="chartjs-tooltip" id="tooltip-0"></div>
+    <!-- <div class="chartjs-tooltip" id="tooltip-0"></div> -->
+    
     <footer>
+       
         <p>
             US Country Data refreshed from CSSE at Johns Hopkins University
             <br>
@@ -137,6 +140,12 @@
             <br>
             <a href="https://github.com/odessacoding/odessacoding.github.io/blob/master/data-sources/texas-dshs-county-confirmed.csv" target="_blank">https://github.com/odessacoding/odessacoding.github.io/blob/master/data-sources/texas-dshs-county-confirmed.csv</a>
         </p>
+
+        <h2 id="changelog">Changelog</h2>
+        <h3>March 22, 2020</h3>
+        <ul>
+            <li>Added Texas Confirmed COVID-19 Data</li>
+        </ul>
     </footer>
 </body>
 <script>
