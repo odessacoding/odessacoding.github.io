@@ -123,13 +123,42 @@
     <div class="chartjs-tooltip" id="tooltip-0"></div>
     <footer>
         <p>
-            Data refreshed from CSSE at Johns Hopkins University
+            US Country Data refreshed from CSSE at Johns Hopkins University
             <br>
             <a href="https://github.com/CSSEGISandData/COVID-19/tree/master/csse_covid_19_data/csse_covid_19_time_series" target="_blank">https://github.com/CSSEGISandData/COVID-19/tree/master/csse_covid_19_data/csse_covid_19_time_series</a>
-        </p>        
+        </p>
+        <p>
+            
+            Texas Data From: Texas Department of Health and Human Services
+            <br>
+            <a href="https://dshs.texas.gov/news/updates.shtm#coronavirus" target="_blank">https://dshs.texas.gov/news/updates.shtm#coronavirus</a>
+            <br>
+            Texas Data Archived and Refreshed from: https://github.com/odessacoding/odessacoding.github.io/blob/master/data-sources/texas-dshs-county-confirmed.csv
+            <br>
+            <a href="https://github.com/odessacoding/odessacoding.github.io/blob/master/data-sources/texas-dshs-county-confirmed.csv" target="_blank">https://github.com/odessacoding/odessacoding.github.io/blob/master/data-sources/texas-dshs-county-confirmed.csv</a>
+        </p>
     </footer>
 </body>
 <script>
+
+    var globalColors = [
+        'rgba(180, 50, 91, .7)',
+        'rgba(280, 150, 191, .7)',
+        'rgba(80, 150, 91, .7)',
+        'rgba(30, 50, 91, .7)',
+        'rgba(55, 50, 231, .7)',
+        'rgba(180, 250, 241, .7)',
+        'rgba(250, 250, 20, .7)',
+        'rgba(180, 0, 91, .7)',
+        'rgba(180, 50, 0, .7)',
+        'rgba(55, 55, 55, .7)',
+        'rgba(100, 100, 100, .7)',
+        'rgba(250, 150, 91, .7)',
+        'rgba(280, 50, 250, .7)',
+        'rgba(75, 50, 75, .7)',
+        'rgba(50, 255, 111, .7)',
+        'rgba(220, 255, 91, .7)',
+    ];
 
     function renderDates() {
         startDate = new Date(dateLabels[0]);
@@ -318,6 +347,135 @@
 
     function drawMyChart(confirmedCases, deathCases, recoveredCases) {
 
+        drawCountryComparisonCharts(confirmedCases, deathCases, recoveredCases);
+        
+        drawTexasCharts(texasConfirmed, texasCountiesConfirmed);
+    }
+
+    function drawTexasCharts(texasConfirmed, texasCountiesConfirmed) {
+        var container = document.querySelector('.my-container');
+        Chart.defaults.global.defaultFontSize = 22;
+        
+        var div = document.createElement('div');
+        div.classList.add('chart-container');
+
+        var canvas = document.createElement('canvas');
+
+        var h2 = document.createElement('h2');
+        h2.innerHTML = 'Texas Confirmed Cases';
+        
+        div.appendChild(h2);
+        div.appendChild(canvas);
+        container.appendChild(div);
+
+        var ctx = canvas.getContext('2d');
+
+        var myData = {
+            labels: texasConfirmed['dates'],
+            datasets: [{
+                label: 'Texas Confirmed',
+                data: texasConfirmed['datasets'],
+                backgroundColor: globalColors[0],
+                fill: false,
+                borderColor: globalColors[0],
+                pointRadius: 3,
+                borderWidth: 1,
+            }]
+        };
+
+        new Chart(ctx, {
+            
+            type: 'line',
+
+            // The data for our dataset
+            data: myData,
+
+            // Configuration options go here
+            options: { 
+                responsive: true,
+                layout: {
+                    
+                },
+                legend: {
+                    position: "top",
+                    align: "center",
+                    labels: {
+                        fontSize: 22,
+                        
+                    },
+                    
+                },
+                tooltips: {
+                    //mode: 'index',
+                    intersect: false,
+                    callbacks: {
+                        label: function(tooltipItem, data) {
+                            var label = data.datasets[tooltipItem.datasetIndex].label || '';
+                            var value = data.datasets[tooltipItem.datasetIndex].data;
+                            return label + ": " + tooltipItem.yLabel.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+                        },
+                    //     // Use the footer callback to display the sum of the items showing in the tooltip
+                    //     footer: function(tooltipItems, data) {
+                    //         var sum = 0;
+
+                    //         tooltipItems.forEach(function(tooltipItem) {
+                    //             //sum += data.datasets[tooltipItem.datasetIndex].data[tooltipItem.index];
+                    //         });
+                    //         return 'Sum: ' + sum;
+                    //     }
+                    // },
+                    // footerFontStyle: 'normal',
+                    // custom: function(ttModel) {
+                    //     console.log(ttModel);
+                    }
+                    
+                },
+                hover: {
+                    // mode: 'index',
+                    intersect: true
+                },
+                scales: {
+                    yAxes: [{
+                        display: true,
+                        position: 'right',
+                        scaleLabel: {
+                            show: true,
+                            labelString: '#'
+                        },
+                        gridLines: {
+                            drawBorder: false,
+                            color: 'rgba(85,85,85, .4)'
+                        },
+                        ticks: {
+                            padding: 10,
+                            
+                            callback: function(value, index, values) {
+                                return value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+                            }
+                        }
+                    }
+                    ],
+                    xAxes: [{
+                        display: true,
+                        ticks: {
+                            
+                        },
+                        scaleLabel: {
+                            show: true,
+                            labelString: 'Day'
+                        },
+                        gridLines: {
+                            drawBorder: false,
+                            color: 'rgba(85,85,85, .2)'
+                        }
+                    }]
+                }
+            }
+
+        });
+    }
+
+    function drawCountryComparisonCharts(confirmedCases, deathCases, recoveredCases) {
         specifiedCountries = [
             'US', 'Italy', 'China', 'Iran','Korea, South',
             'Spain','Germany','France','Switzerland','Norway','Sweden',
@@ -450,6 +608,9 @@
     var fatalityCases;
     var recoveredCases;
 
+    var texasConfirmed;
+    var texasCountiesConfirmed;
+
     $(document).ready(function () {
         $.when(
             $.ajax({
@@ -479,12 +640,80 @@
                     confirmedDataFromGithub = data;
                     recoveredCases = getTotalsByCountryFromCSV(data);
                 }
+            }),
+            $.ajax({
+                type: "GET",
+                url: "https://raw.githubusercontent.com/odessacoding/odessacoding.github.io/master/data-sources/texas-dshs-county-confirmed.csv",
+                dataType: "text",
+                success: function (data) {
+                    texasConfirmed = getTexasConfirmedByDate(data);
+                    texasCountiesConfirmed = getTexasConfirmedByCountyAndDate(data);
+                }
             })
 
         ).then(function () {
             drawMyChart(confirmedCases, fatalityCases, recoveredCases);
             renderDates();
         })
+
+        function getTexasConfirmedByDate(data) {
+            countyData = getTexasConfirmedByCountyAndDate(data);
+            texasConfirmedObject = {}
+            runningTotals = new Array(countyData['dates'].length).fill(0);
+            for(var key in countyData.datasets) {
+                confirmedList = countyData.datasets[key];
+                for(var j = 0; j < confirmedList.length; ++j) {
+                    runningTotals[j] += confirmedList[j];
+                }
+            }
+            
+            texasConfirmedObject['dates'] = countyData['dates'];
+            texasConfirmedObject['datasets'] = runningTotals;
+            return texasConfirmedObject;
+        }
+
+        function getTexasConfirmedByCountyAndDate(data) {
+            var result = $.csv.toArrays(data);
+            var headers = result[0];
+            result=result.slice(1)
+            var res = {}
+            res['headers'] = headers;
+            res['dates'] = []
+            res['counties'] = []
+            // acquire unique dates and counties
+            for(var i = 0; i < result.length; ++i) {
+                date = result[i][2];
+                county = result[i][0];
+                
+                if(res['dates'].indexOf(date) < 0 ) { res['dates'].push(date); }
+                if(res['counties'].indexOf(county) < 0) { res['counties'].push(county); }
+            }
+            res['counties'].sort();
+            
+            // Create County Table
+            countyData = {}
+            for( var j = 0; j < res['counties'].length; ++j) {
+                if( !countyData.hasOwnProperty(res['counties'][j]) ) {
+                    countyData[res['counties'][j]] = new Array(res['dates'].length).fill(0);
+                }
+            }
+
+            // Hydreate County table
+            for(var i = 0; i < result.length; ++i) {
+                date = result[i][2];
+                county = result[i][0];
+                cases = result[i][1]
+                if( countyData.hasOwnProperty(county) && res['dates'].indexOf(date) > -1) { 
+                    countyData[county][res['dates'].indexOf(date)] = parseInt(cases);
+                } else {
+                    console.error('Could not hydrate TX County Point:' + county + ' ' + date);
+                }
+            }
+
+           res['datasets'] = countyData;
+           return res;
+           
+        }
 
 
         function getListOfDates(muhData) {
