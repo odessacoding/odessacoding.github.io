@@ -146,6 +146,14 @@
         <ul>
             <li>Added Texas Confirmed COVID-19 Data</li>
         </ul>
+        <h3>March 23, 2020</h3>
+        <ul>
+            <li>Updated CDC data source endpoint.</li>
+        </ul>
+        <h3>March 24, 2020</h3>
+        <ul>
+            <li>Updated Texas Confirmed/Death COVID-19 Data and updated endpoint for this data source.</li>
+        </ul>
     </footer>
 </body>
 <script>
@@ -652,7 +660,7 @@
             }),
             $.ajax({
                 type: "GET",
-                url: "https://raw.githubusercontent.com/odessacoding/odessacoding.github.io/master/data-sources/texas-dshs-county-confirmed.csv",
+                url: "https://raw.githubusercontent.com/odessacoding/odessacoding.github.io/master/data-sources/texas-dshs-county-confirmed-and-deaths.csv",
                 dataType: "text",
                 success: function (data) {
                     texasConfirmed = getTexasConfirmedByDate(data);
@@ -691,7 +699,7 @@
             res['counties'] = []
             // acquire unique dates and counties
             for(var i = 0; i < result.length; ++i) {
-                date = result[i][2];
+                date = result[i][3];
                 county = result[i][0];
                 
                 if(res['dates'].indexOf(date) < 0 ) { res['dates'].push(date); }
@@ -709,7 +717,7 @@
 
             // Hydreate County table
             for(var i = 0; i < result.length; ++i) {
-                date = result[i][2];
+                date = result[i][3];
                 county = result[i][0];
                 cases = result[i][1]
                 if( countyData.hasOwnProperty(county) && res['dates'].indexOf(date) > -1) { 
