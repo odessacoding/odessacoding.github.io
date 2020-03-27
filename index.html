@@ -16,21 +16,32 @@
             font-family: 'Rubik', sans-serif;
         }
 
-         span, h1,h2,h3 {
+        span,
+        h1,
+        h2,
+        h3 {
             color: #FF69EA;
             font-family: 'Rubik', sans-serif;
         }
 
-        h2, h3, h4 {
+        h2,
+        h3,
+        h4 {
             font-weight: 400;
         }
 
-        p, ul, li {
+        p,
+        ul,
+        li {
             color: #aaa;
             font-size: 18px;
         }
 
-        a, a:link, a:hover, a:visited, a:active {
+        a,
+        a:link,
+        a:hover,
+        a:visited,
+        a:active {
             color: #FF69EA;
         }
 
@@ -39,6 +50,7 @@
             -webkit-user-select: none;
             -ms-user-select: none;
         }
+
         .chart-container {
             width: 900px;
             max-width: 900px;
@@ -46,6 +58,7 @@
             margin-right: 40px;
             margin-bottom: 40px;
         }
+
         .my-container {
             display: flex;
             flex-direction: row;
@@ -69,46 +82,66 @@
         }
 
         .chartjs-tooltip {
-			opacity: 1;
-			position: absolute;
-			background: rgba(255, 0, 0, .7);
-			color: white;
-			border-radius: 3px;
-			-webkit-transition: all .1s ease;
-			transition: all .1s ease;
-			pointer-events: none;
-			-webkit-transform: translate(-50%, 0);
-			transform: translate(-50%, 0);
-			padding: 4px;
-		}
+            opacity: 1;
+            position: absolute;
+            background: rgba(255, 0, 0, .7);
+            color: white;
+            border-radius: 3px;
+            -webkit-transition: all .1s ease;
+            transition: all .1s ease;
+            pointer-events: none;
+            -webkit-transform: translate(-50%, 0);
+            transform: translate(-50%, 0);
+            padding: 4px;
+        }
 
-		.chartjs-tooltip-key {
-			display: inline-block;
-			width: 10px;
-			height: 10px;
-		}
+        .chartjs-tooltip-key {
+            display: inline-block;
+            width: 10px;
+            height: 10px;
+        }
+
+        .dummy-bg-color-picker {
+            /* Used for the globalColors javascript variable below. */
+            background-color: rgba(180, 50, 150, .7);
+            background-color: rgba(255, 255, 255, .9);
+            background-color: rgba(200, 230, 201, .9);
+            background-color: rgba(30, 90, 230, .9);
+            background-color: rgba(105, 30, 220, .9);
+            background-color: rgba(180, 250, 241, .7);
+            background-color: rgba(230, 230, 20, .2);
+            background-color: rgba(180, 0, 91, .7);
+            background-color: rgba(180, 150, 205, .9);
+            background-color: rgba(155, 55, 55, .7);
+            background-color: rgba(100, 200, 120, .7);
+            background-color: rgba(250, 150, 91, .7);
+            background-color: rgba(250, 50, 250, .7);
+            background-color: rgba(235, 50, 75, .9);
+            background-color: rgba(50, 255, 111, .7);
+            background-color: rgba(250, 255, 91, .7);
+        }
     </style>
 
 </head>
 
 <body>
-    
+
     <div class="main-container">
         <div class="header-container">
             <h1>COVID-19 Cases</h1>
             <h2>
-                <span id="startDate"></span> through <span id="endDate"></span> 
+                <span id="startDate"></span> through <span id="endDate"></span>
             </h2>
             <h3>
-                China, Italy, Iran, Korea, 
-                South, Spain, Germany, France, Switzerland, Norway, 
+                China, Italy, Iran, Korea,
+                South, Spain, Germany, France, Switzerland, Norway,
                 Sweden, Netherlands, Denmark, United Kingdom, Japan, Cruise Ship, US
             </h3>
             <p>
                 All legends (confirmed, deaths and recovered) sorted from greatest to least.
                 <br>
                 These countries were hand-picked by the largest number of cases. Further work
-                should be done to dynamically update this list based on large day-to-day differences, 
+                should be done to dynamically update this list based on large day-to-day differences,
                 top 10 confirmed case rates, or any other valuable metric.
             </p>
             <p>
@@ -116,29 +149,33 @@
             </p>
         </div>
     </div>
-    
+
     <div class="my-container">
-        
+
 
     </div>
     <!-- <div class="chartjs-tooltip" id="tooltip-0"></div> -->
-    
+
     <footer>
-       
+
         <p>
             US Country Data refreshed from CSSE at Johns Hopkins University
             <br>
-            <a href="https://github.com/CSSEGISandData/COVID-19/tree/master/csse_covid_19_data/csse_covid_19_time_series" target="_blank">https://github.com/CSSEGISandData/COVID-19/tree/master/csse_covid_19_data/csse_covid_19_time_series</a>
+            <a href="https://github.com/CSSEGISandData/COVID-19/tree/master/csse_covid_19_data/csse_covid_19_time_series"
+                target="_blank">https://github.com/CSSEGISandData/COVID-19/tree/master/csse_covid_19_data/csse_covid_19_time_series</a>
         </p>
         <p>
-            
+
             Texas Data From: Texas Department of Health and Human Services
             <br>
-            <a href="https://dshs.texas.gov/news/updates.shtm#coronavirus" target="_blank">https://dshs.texas.gov/news/updates.shtm#coronavirus</a>
+            <a href="https://dshs.texas.gov/news/updates.shtm#coronavirus"
+                target="_blank">https://dshs.texas.gov/news/updates.shtm#coronavirus</a>
             <br>
-            Texas Data Archived and Refreshed from: https://github.com/odessacoding/odessacoding.github.io/blob/master/data-sources/texas-dshs-county-confirmed.csv
+            Texas Data Archived and Refreshed from:
+            https://github.com/odessacoding/odessacoding.github.io/blob/master/data-sources/texas-dshs-county-confirmed.csv
             <br>
-            <a href="https://github.com/odessacoding/odessacoding.github.io/blob/master/data-sources/texas-dshs-county-confirmed.csv" target="_blank">https://github.com/odessacoding/odessacoding.github.io/blob/master/data-sources/texas-dshs-county-confirmed.csv</a>
+            <a href="https://github.com/odessacoding/odessacoding.github.io/blob/master/data-sources/texas-dshs-county-confirmed.csv"
+                target="_blank">https://github.com/odessacoding/odessacoding.github.io/blob/master/data-sources/texas-dshs-county-confirmed.csv</a>
         </p>
 
         <h2 id="changelog">Changelog</h2>
@@ -155,34 +192,34 @@
             <li>Updated Texas Confirmed/Death COVID-19 Data and updated endpoint for this data source.</li>
         </ul>
     </footer>+
-    
+
 </body>
 <script>
 
     var globalColors = [
-        'rgba(180, 50, 91, .7)',
-        'rgba(280, 150, 191, .7)',
-        'rgba(80, 150, 91, .7)',
-        'rgba(30, 50, 91, .7)',
-        'rgba(55, 50, 231, .7)',
+        'rgba(180, 50, 150, .7)',
+        'rgba(255, 255, 255, .9)',
+        'rgba(200, 230, 201, .9)',
+        'rgba(30, 90, 230, .9)',
+        'rgba(105, 30, 220, .9)',
         'rgba(180, 250, 241, .7)',
-        'rgba(250, 250, 20, .7)',
+        'rgba(230, 230, 20, .2)',
         'rgba(180, 0, 91, .7)',
-        'rgba(180, 50, 0, .7)',
-        'rgba(55, 55, 55, .7)',
-        'rgba(100, 100, 100, .7)',
+        'rgba(180, 150, 205, .9)',
+        'rgba(155, 55, 55, .7)',
+        'rgba(100, 200, 120, .7)',
         'rgba(250, 150, 91, .7)',
-        'rgba(280, 50, 250, .7)',
-        'rgba(75, 50, 75, .7)',
+        'rgba(250, 50, 250, .7)',
+        'rgba(235, 50, 75, .9)',
         'rgba(50, 255, 111, .7)',
-        'rgba(220, 255, 91, .7)',
+        'rgba(250, 255, 91, .7)',
     ];
 
     function renderDates() {
         startDate = new Date(dateLabels[0]);
         endDate = new Date(dateLabels[dateLabels.length - 1])
-        $('#startDate').text(startDate.getMonth()+1 + "-" + startDate.getDate() + "-" + startDate.getFullYear() );
-        $('#endDate').text(endDate.getMonth()+1 + "-" + endDate.getDate() + "-" +  endDate.getFullYear());
+        $('#startDate').text(startDate.getMonth() + 1 + "-" + startDate.getDate() + "-" + startDate.getFullYear());
+        $('#endDate').text(endDate.getMonth() + 1 + "-" + endDate.getDate() + "-" + endDate.getFullYear());
     }
 
     function getAllCountryDatasets(confirmedCases, deathCases, recoveredCases) {
@@ -198,7 +235,7 @@
                 };
 
                 var deathObject = {
-                    label:  'Deaths',
+                    label: 'Deaths',
                     backgroundColor: 'rgba(207,50,91,.6)',
                     borderColor: 'rgba(176,57,88,.9)',
                     borderWidth: 2,
@@ -206,7 +243,7 @@
                 };
 
                 var recoveredObject = {
-                    label:  'Recovered',
+                    label: 'Recovered',
                     backgroundColor: 'rgba(50,207,172, .8)',
                     borderColor: 'rgba(51,152,129,.9)',
                     borderWidth: 2,
@@ -222,7 +259,7 @@
         return dataSets;
     }
 
-    
+
 
     function getSpecificCountryDatasets(confirmedCases, deathCases, recoveredCases, targetCountries) {
         var dataSets = {}
@@ -237,7 +274,7 @@
                 };
 
                 var deathObject = {
-                    label:  'Deaths',
+                    label: 'Deaths',
                     backgroundColor: 'rgba(207,50,91,.6)',
                     borderColor: 'rgba(176,57,88,.9)',
                     borderWidth: 2,
@@ -245,7 +282,7 @@
                 };
 
                 var recoveredObject = {
-                    label:  'Recovered',
+                    label: 'Recovered',
                     backgroundColor: 'rgba(50,207,172, .8)',
                     borderColor: 'rgba(51,152,129,.9)',
                     borderWidth: 2,
@@ -261,22 +298,22 @@
         return dataSets;
     }
 
-    function generateShadesOfColor(r,g,b,a,color,levels){
+    function generateShadesOfColor(r, g, b, a, color, levels) {
         var colors = [];
         var comma = ',';
 
-        for(var i = 0; i < levels; ++i) {
-            if(color === 'red') {
-                colors.push('rgba(' + (r+i*10) + comma + (g+i*5) + comma + (b-i*10) + comma + a + ')');
-            } else if(color === 'green') {
-                colors.push('rgba(' + (r-i*20) + comma + (g+i*10) + comma + (b-i*5) + comma + a + ')');
-            } else if(color === 'blue') {
-                colors.push('rgba(' + (r+i*5) + comma + (g-i*10) + comma + (b+i-10) + comma + a + ')');
+        for (var i = 0; i < levels; ++i) {
+            if (color === 'red') {
+                colors.push('rgba(' + (r + i * 10) + comma + (g + i * 5) + comma + (b - i * 10) + comma + a + ')');
+            } else if (color === 'green') {
+                colors.push('rgba(' + (r - i * 20) + comma + (g + i * 10) + comma + (b - i * 5) + comma + a + ')');
+            } else if (color === 'blue') {
+                colors.push('rgba(' + (r + i * 5) + comma + (g - i * 10) + comma + (b + i - 10) + comma + a + ')');
             }
         }
-        
+
         return colors;
-        
+
     }
 
     function getSpecificCountryDatasetsNormalized(confirmedCases, deathCases, recoveredCases, targetCountries) {
@@ -286,28 +323,10 @@
             'recovered': [],
         }
 
-        var shadesOfRed = generateShadesOfColor(180,50,91,.7, 'red', targetCountries.length);
-        var shadesOfGreen = generateShadesOfColor(50,150,172, .8, 'green', targetCountries.length);
-        var shadesOfBlue = generateShadesOfColor(255,232,150,.7, 'blue', targetCountries.length);
-        var colors = [
-            'rgba(180, 50, 91, .7)',
-            'rgba(280, 150, 191, .7)',
-            'rgba(80, 150, 91, .7)',
-            'rgba(30, 50, 91, .7)',
-            'rgba(55, 50, 231, .7)',
-            'rgba(180, 250, 241, .7)',
-            'rgba(250, 250, 20, .7)',
-            'rgba(180, 0, 91, .7)',
-            'rgba(180, 50, 0, .7)',
-            'rgba(55, 55, 55, .7)',
-            'rgba(100, 100, 100, .7)',
-            'rgba(250, 150, 91, .7)',
-            'rgba(280, 50, 250, .7)',
-            'rgba(75, 250, 175, .9)',
-            'rgba(50, 255, 111, .7)',
-            'rgba(220, 255, 91, .7)',
-        ]
-
+        var shadesOfRed = generateShadesOfColor(180, 50, 91, .7, 'red', targetCountries.length);
+        var shadesOfGreen = generateShadesOfColor(50, 150, 172, .8, 'green', targetCountries.length);
+        var shadesOfBlue = generateShadesOfColor(255, 232, 150, .7, 'blue', targetCountries.length);
+        var colors = globalColors;
         var index = 0;
         for (var key in confirmedCases) {
             if (confirmedCases.hasOwnProperty(key) && targetCountries.indexOf(key) > -1) {
@@ -340,7 +359,7 @@
                     borderWidth: 1,
                     data: recoveredCases[key]
                 };
-                
+
                 dataSets.confirmed.push(confirmObject);
                 dataSets.deaths.push(deathObject);
                 dataSets.recovered.push(recoveredObject);
@@ -348,16 +367,16 @@
             }
         }
 
-        dataSets.confirmed.sort(function(a,b){ 
-            return b.data[b.data.length-1] - a.data[a.data.length-1];
+        dataSets.confirmed.sort(function (a, b) {
+            return b.data[b.data.length - 1] - a.data[a.data.length - 1];
         });
 
-        dataSets.deaths.sort(function(a,b){ 
-            return b.data[b.data.length-1] - a.data[a.data.length-1];
+        dataSets.deaths.sort(function (a, b) {
+            return b.data[b.data.length - 1] - a.data[a.data.length - 1];
         });
 
-        dataSets.recovered.sort(function(a,b){ 
-            return b.data[b.data.length-1] - a.data[a.data.length-1];
+        dataSets.recovered.sort(function (a, b) {
+            return b.data[b.data.length - 1] - a.data[a.data.length - 1];
         });
 
         return dataSets;
@@ -366,14 +385,203 @@
     function drawMyChart(confirmedCases, deathCases, recoveredCases) {
 
         drawCountryComparisonCharts(confirmedCases, deathCases, recoveredCases);
-        
+
         drawTexasCharts(texasConfirmed, texasCountiesConfirmed);
+
+        drawWTXCharts(texasConfirmed, texasCountiesConfirmed);
+
+        //drawTop10TXCountyCharts(texasConfirmed, texasCountiesConfirmed);
+    }
+
+    function drawTop10TXCountyCharts(texasConfirmed, texasCountiesConfirmed) {
+        console.log(texasCountiesConfirmed);
+    }
+
+    function drawWTXCharts(texasConfirmed, texasCountiesConfirmed) {
+        var container = document.querySelector('.my-container');
+        Chart.defaults.global.defaultFontSize = 22;
+
+        var div = document.createElement('div');
+        div.classList.add('chart-container');
+
+        var canvas = document.createElement('canvas');
+
+        var h2 = document.createElement('h2');
+        h2.innerHTML = 'West Texas Relevant';
+
+        div.appendChild(h2);
+        div.appendChild(canvas);
+        container.appendChild(div);
+
+        var ctx = canvas.getContext('2d');
+        wtxCounties = [
+            'Ector',
+            'Midland',
+            'Glasscock',
+            'Loving',
+            'Winkler',
+            'Sterling',
+            'Coke',
+            'Reeves',
+            'Ward',
+            'Crane',
+            'Upton',
+            'Reagan',
+            'Irion',
+            'Tom Green',
+            'Pecos',
+            'Crockett',
+            'Schleicher',
+            'Andrews',
+            'Martin',
+            'Howard',
+            'Mitchell',
+            'Nolan',
+            'Gaines',
+            'Dawson',
+            'Borden',
+            'Scurry',
+            'Fisher',
+            'Yoakum',
+            'Terry',
+            'Lynn',
+            'Garza',
+            'Kent',
+            'Stonewall',
+            'Cochran',
+            'Hockley',
+            'Lubbock',
+            'Crosby',
+            'Dickens',
+            'Lea'
+        ];
+
+        wtxDatasets = filterAndGenerateDatasets(wtxCounties, texasCountiesConfirmed);
+
+        var myData = {
+            labels: texasConfirmed['dates'],
+            datasets: wtxDatasets
+        };
+
+        new Chart(ctx, {
+
+            type: 'line',
+
+            // The data for our dataset
+            data: myData,
+
+            // Configuration options go here
+            options: {
+                responsive: true,
+                layout: {
+
+                },
+                legend: {
+                    position: "top",
+                    align: "center",
+                    labels: {
+                        fontSize: 22,
+
+                    },
+
+                },
+                tooltips: {
+                    //mode: 'index',
+                    intersect: false,
+                    callbacks: {
+                        label: function (tooltipItem, data) {
+                            var label = data.datasets[tooltipItem.datasetIndex].label || '';
+                            var value = data.datasets[tooltipItem.datasetIndex].data;
+                            return label + ": " + tooltipItem.yLabel.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+                        },
+                        //     // Use the footer callback to display the sum of the items showing in the tooltip
+                        //     footer: function(tooltipItems, data) {
+                        //         var sum = 0;
+
+                        //         tooltipItems.forEach(function(tooltipItem) {
+                        //             //sum += data.datasets[tooltipItem.datasetIndex].data[tooltipItem.index];
+                        //         });
+                        //         return 'Sum: ' + sum;
+                        //     }
+                        // },
+                        // footerFontStyle: 'normal',
+                        // custom: function(ttModel) {
+                        //     console.log(ttModel);
+                    }
+
+                },
+                hover: {
+                    // mode: 'index',
+                    intersect: true
+                },
+                scales: {
+                    yAxes: [{
+                        display: true,
+                        position: 'right',
+                        scaleLabel: {
+                            show: true,
+                            labelString: '#'
+                        },
+                        gridLines: {
+                            drawBorder: false,
+                            color: 'rgba(85,85,85, .4)'
+                        },
+                        ticks: {
+                            padding: 10,
+
+                            callback: function (value, index, values) {
+                                return value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+                            }
+                        }
+                    }
+                    ],
+                    xAxes: [{
+                        display: true,
+                        ticks: {
+
+                        },
+                        scaleLabel: {
+                            show: true,
+                            labelString: 'Day'
+                        },
+                        gridLines: {
+                            drawBorder: false,
+                            color: 'rgba(85,85,85, .2)'
+                        }
+                    }]
+                }
+            }
+
+        });
+    }
+
+    function filterAndGenerateDatasets(filterSet, datasets) {
+        var filteredDatasets = []
+
+        var index = 0;
+
+        for(key in datasets['datasets']) {
+            
+            if( filterSet.indexOf(key) >= 0) {
+                temp = {}
+                temp['label'] = key;
+                temp['backgroundColor'] = globalColors[index % globalColors.length];
+                temp['borderColor'] = globalColors[index % globalColors.length];
+                temp['fill'] = false;
+                temp['data'] = datasets['datasets'][key];
+                filteredDatasets.push(temp)
+                index++;
+            }
+        }
+
+        return filteredDatasets;
+
     }
 
     function drawTexasCharts(texasConfirmed, texasCountiesConfirmed) {
         var container = document.querySelector('.my-container');
         Chart.defaults.global.defaultFontSize = 22;
-        
+
         var div = document.createElement('div');
         div.classList.add('chart-container');
 
@@ -381,7 +589,7 @@
 
         var h2 = document.createElement('h2');
         h2.innerHTML = 'Texas Confirmed Cases';
-        
+
         div.appendChild(h2);
         div.appendChild(canvas);
         container.appendChild(div);
@@ -402,51 +610,51 @@
         };
 
         new Chart(ctx, {
-            
+
             type: 'line',
 
             // The data for our dataset
             data: myData,
 
             // Configuration options go here
-            options: { 
+            options: {
                 responsive: true,
                 layout: {
-                    
+
                 },
                 legend: {
                     position: "top",
                     align: "center",
                     labels: {
                         fontSize: 22,
-                        
+
                     },
-                    
+
                 },
                 tooltips: {
                     //mode: 'index',
                     intersect: false,
                     callbacks: {
-                        label: function(tooltipItem, data) {
+                        label: function (tooltipItem, data) {
                             var label = data.datasets[tooltipItem.datasetIndex].label || '';
                             var value = data.datasets[tooltipItem.datasetIndex].data;
                             return label + ": " + tooltipItem.yLabel.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
                         },
-                    //     // Use the footer callback to display the sum of the items showing in the tooltip
-                    //     footer: function(tooltipItems, data) {
-                    //         var sum = 0;
+                        //     // Use the footer callback to display the sum of the items showing in the tooltip
+                        //     footer: function(tooltipItems, data) {
+                        //         var sum = 0;
 
-                    //         tooltipItems.forEach(function(tooltipItem) {
-                    //             //sum += data.datasets[tooltipItem.datasetIndex].data[tooltipItem.index];
-                    //         });
-                    //         return 'Sum: ' + sum;
-                    //     }
-                    // },
-                    // footerFontStyle: 'normal',
-                    // custom: function(ttModel) {
-                    //     console.log(ttModel);
+                        //         tooltipItems.forEach(function(tooltipItem) {
+                        //             //sum += data.datasets[tooltipItem.datasetIndex].data[tooltipItem.index];
+                        //         });
+                        //         return 'Sum: ' + sum;
+                        //     }
+                        // },
+                        // footerFontStyle: 'normal',
+                        // custom: function(ttModel) {
+                        //     console.log(ttModel);
                     }
-                    
+
                 },
                 hover: {
                     // mode: 'index',
@@ -466,8 +674,8 @@
                         },
                         ticks: {
                             padding: 10,
-                            
-                            callback: function(value, index, values) {
+
+                            callback: function (value, index, values) {
                                 return value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
                             }
                         }
@@ -476,7 +684,7 @@
                     xAxes: [{
                         display: true,
                         ticks: {
-                            
+
                         },
                         scaleLabel: {
                             show: true,
@@ -495,16 +703,16 @@
 
     function drawCountryComparisonCharts(confirmedCases, deathCases, recoveredCases) {
         specifiedCountries = [
-            'US', 'Italy', 'China', 'Iran','Korea, South',
-            'Spain','Germany','France','Switzerland','Norway','Sweden',
-            'Netherlands','Denmark','United Kingdom','Japan','Cruise Ship'
+            'US', 'Italy', 'China', 'Iran', 'Korea, South',
+            'Spain', 'Germany', 'France', 'Switzerland', 'Norway', 'Sweden',
+            'Netherlands', 'Denmark', 'United Kingdom', 'Japan', 'Cruise Ship'
         ]
         allDataSets = getSpecificCountryDatasetsNormalized(confirmedCases, deathCases, recoveredCases, specifiedCountries);
 
         var container = document.querySelector('.my-container');
         Chart.defaults.global.defaultFontSize = 22;
         // Chart.defaults.global.legend.align = 'start';
-        
+
 
         for (var key in allDataSets) {
             var div = document.createElement('div');
@@ -514,7 +722,7 @@
 
             var h2 = document.createElement('h2');
             h2.innerHTML = key;
-            
+
             div.appendChild(h2);
             div.appendChild(canvas);
             container.appendChild(div);
@@ -522,56 +730,56 @@
             var ctx = canvas.getContext('2d');
 
             var myData = {
-                    labels: dateLabels,
-                    datasets: allDataSets[key]
-                };
-            
+                labels: dateLabels,
+                datasets: allDataSets[key]
+            };
+
             new Chart(ctx, {
-                
+
                 type: 'line',
 
                 // The data for our dataset
                 data: myData,
 
                 // Configuration options go here
-                options: { 
+                options: {
                     responsive: true,
                     layout: {
-                       
+
                     },
                     legend: {
                         position: "top",
                         align: "center",
                         labels: {
                             fontSize: 22,
-                            
+
                         },
-                        
+
                     },
                     tooltips: {
                         //mode: 'index',
                         intersect: false,
                         callbacks: {
-                            label: function(tooltipItem, data) {
+                            label: function (tooltipItem, data) {
                                 var label = data.datasets[tooltipItem.datasetIndex].label || '';
                                 var value = data.datasets[tooltipItem.datasetIndex].data;
                                 return label + ": " + tooltipItem.yLabel.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
                             },
-                        //     // Use the footer callback to display the sum of the items showing in the tooltip
-                        //     footer: function(tooltipItems, data) {
-                        //         var sum = 0;
+                            //     // Use the footer callback to display the sum of the items showing in the tooltip
+                            //     footer: function(tooltipItems, data) {
+                            //         var sum = 0;
 
-                        //         tooltipItems.forEach(function(tooltipItem) {
-                        //             //sum += data.datasets[tooltipItem.datasetIndex].data[tooltipItem.index];
-                        //         });
-                        //         return 'Sum: ' + sum;
-                        //     }
-                        // },
-                        // footerFontStyle: 'normal',
-                        // custom: function(ttModel) {
-                        //     console.log(ttModel);
+                            //         tooltipItems.forEach(function(tooltipItem) {
+                            //             //sum += data.datasets[tooltipItem.datasetIndex].data[tooltipItem.index];
+                            //         });
+                            //         return 'Sum: ' + sum;
+                            //     }
+                            // },
+                            // footerFontStyle: 'normal',
+                            // custom: function(ttModel) {
+                            //     console.log(ttModel);
                         }
-                        
+
                     },
                     hover: {
                         // mode: 'index',
@@ -591,8 +799,8 @@
                             },
                             ticks: {
                                 padding: 10,
-                                
-                                callback: function(value, index, values) {
+
+                                callback: function (value, index, values) {
                                     return value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
                                 }
                             }
@@ -601,7 +809,7 @@
                         xAxes: [{
                             display: true,
                             ticks: {
-                                
+
                             },
                             scaleLabel: {
                                 show: true,
@@ -667,6 +875,14 @@
                     texasConfirmed = getTexasConfirmedByDate(data);
                     texasCountiesConfirmed = getTexasConfirmedByCountyAndDate(data);
                 }
+            }),
+            $.ajax({
+                type: "GET",
+                url: "https://services5.arcgis.com/ACaLB9ifngzawspq/arcgis/rest/services/COVID19County_ViewLayer/FeatureServer/0/query?where=Count_+%3E+0&objectIds=&time=&geometry=&geometryType=esriGeometryEnvelope&inSR=&spatialRel=esriSpatialRelIntersects&resultType=none&distance=0.0&units=esriSRUnit_Meter&returnGeodetic=false&outFields=*&returnGeometry=false&returnCentroid=false&featureEncoding=esriDefault&multipatchOption=xyFootprint&maxAllowableOffset=&geometryPrecision=&outSR=&datumTransformation=&applyVCSProjection=false&returnIdsOnly=false&returnUniqueIdsOnly=false&returnCountOnly=false&returnExtentOnly=false&returnQueryGeometry=false&returnDistinctValues=false&cacheHint=false&orderByFields=&groupByFieldsForStatistics=&outStatistics=&having=&resultOffset=&resultRecordCount=&returnZ=false&returnM=false&returnExceededLimitFeatures=true&quantizationParameters=&sqlFormat=none&f=pjson&token=",
+                dataType: "json",
+                success: function (data) {
+                    texasCountyData = getTexasCountyDataFromArcGISJSON(data);
+                }
             })
 
         ).then(function () {
@@ -678,59 +894,65 @@
             countyData = getTexasConfirmedByCountyAndDate(data);
             texasConfirmedObject = {}
             runningTotals = new Array(countyData['dates'].length).fill(0);
-            for(var key in countyData.datasets) {
+            for (var key in countyData.datasets) {
                 confirmedList = countyData.datasets[key];
-                for(var j = 0; j < confirmedList.length; ++j) {
+                for (var j = 0; j < confirmedList.length; ++j) {
                     runningTotals[j] += confirmedList[j];
                 }
             }
-            
+
             texasConfirmedObject['dates'] = countyData['dates'];
             texasConfirmedObject['datasets'] = runningTotals;
             return texasConfirmedObject;
         }
 
+        function getTexasCountyDataFromArcGISJSON(data) {
+
+            arcgisJSON = data
+            countyData = arcgisJSON.features
+        }
+
         function getTexasConfirmedByCountyAndDate(data) {
             var result = $.csv.toArrays(data);
             var headers = result[0];
-            result=result.slice(1)
+            result = result.slice(1)
             var res = {}
             res['headers'] = headers;
             res['dates'] = []
             res['counties'] = []
             // acquire unique dates and counties
-            for(var i = 0; i < result.length; ++i) {
+            for (var i = 0; i < result.length; ++i) {
                 date = result[i][3];
                 county = result[i][0];
-                
-                if(res['dates'].indexOf(date) < 0 ) { res['dates'].push(date); }
-                if(res['counties'].indexOf(county) < 0) { res['counties'].push(county); }
+
+                if (res['dates'].indexOf(date) < 0) { res['dates'].push(date); }
+                if (res['counties'].indexOf(county) < 0) { res['counties'].push(county); }
             }
             res['counties'].sort();
-            
+
             // Create County Table
             countyData = {}
-            for( var j = 0; j < res['counties'].length; ++j) {
-                if( !countyData.hasOwnProperty(res['counties'][j]) ) {
+            for (var j = 0; j < res['counties'].length; ++j) {
+                if (!countyData.hasOwnProperty(res['counties'][j])) {
                     countyData[res['counties'][j]] = new Array(res['dates'].length).fill(0);
                 }
             }
 
             // Hydreate County table
-            for(var i = 0; i < result.length; ++i) {
+            for (var i = 0; i < result.length; ++i) {
                 date = result[i][3];
                 county = result[i][0];
                 cases = result[i][1]
-                if( countyData.hasOwnProperty(county) && res['dates'].indexOf(date) > -1) { 
+                if (countyData.hasOwnProperty(county) && res['dates'].indexOf(date) > -1) {
                     countyData[county][res['dates'].indexOf(date)] = parseInt(cases);
                 } else {
                     console.error('Could not hydrate TX County Point:' + county + ' ' + date);
                 }
             }
 
-           res['datasets'] = countyData;
-           return res;
-           
+            res['datasets'] = countyData;
+            return res;
+
         }
 
 
@@ -767,7 +989,7 @@
                     }
                 }
             }
-            
+
             return runningTotal;
         }
 
