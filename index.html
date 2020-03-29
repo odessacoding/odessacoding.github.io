@@ -179,6 +179,11 @@
         </p>
 
         <h2 id="changelog">Changelog</h2>
+        <h3>March 29, 2020</h3>
+        <ul>
+            <li>Added confirmed and death charts of US states. Currently in beta. States were manually picked today based on highest confirmation numbers.</li>
+            <li>Data is being aggregated from the <a href="https://github.com/CSSEGISandData/COVID-19/tree/master/csse_covid_19_data/csse_covid_19_daily_reports" target="_blank">CDC daily report data. </a> </li>
+        </ul>
         <h3>March 27, 2020</h3>
         <ul>
             <li>Added several hand-picked West Texas Counties.</li>
@@ -834,6 +839,282 @@
         }
     }
 
+    function getFilteredDatasetsByArrayKey(targets, dataArray) {
+            filteredDatasets = [];
+
+            for(var i = 0; i < targets.length; ++i) {
+                currentTarget = targets[i];
+                for(var j = 1; j < dataArray.length; ++j) {
+                    
+                    if(currentTarget == dataArray[j][0]) {
+                        temp = {}
+                        temp['label'] = currentTarget;
+                        temp['data'] = dataArray[j].splice(1);
+                        
+                        temp['backgroundColor'] = globalColors[i];
+                        temp['fill'] = false;
+                        temp['borderColor'] = globalColors[i];
+                        temp['pointRadius'] = 3;
+                        temp['borderWidth'] = 1;
+                        filteredDatasets.push(temp);
+                    }
+                }
+            }
+            
+            return filteredDatasets;
+            // [{
+            //     label: 'Texas Confirmed',
+            //     data: texasConfirmed['datasets'],
+            //     backgroundColor: globalColors[0],
+            //     fill: false,
+            //     borderColor: globalColors[0],
+            //     pointRadius: 3,
+            //     borderWidth: 1,
+            // }]
+        }
+
+    function drawUSConfirmedCharts() {
+        var container = document.querySelector('.my-container');
+        Chart.defaults.global.defaultFontSize = 22;
+
+        var div = document.createElement('div');
+        div.classList.add('chart-container');
+
+        var canvas = document.createElement('canvas');
+
+        var h2 = document.createElement('h2');
+        h2.innerHTML = 'BETA - US States Confirmed';
+
+        div.appendChild(h2);
+        div.appendChild(canvas);
+        container.appendChild(div);
+
+        var ctx = canvas.getContext('2d');
+        
+        targetStates = [
+            'New York',
+            'New Jersey',
+            'California',
+            'Michigan',
+            'Washington',
+            'Massachusetts',
+            'Illinois',
+            'Florida',
+            'Louisiana',
+            'Pennsylvania',
+            'Georgia',
+            'Texas',
+            'Colorado',
+            'Tennessee'
+        ];
+        dates = usStateConfirmedData[0].splice(1);
+        
+        myDatasets = getFilteredDatasetsByArrayKey(targetStates, usStateConfirmedData);
+
+
+        new Chart(ctx, {
+
+            type: 'line',
+
+            // The data for our dataset
+            data: {
+                labels: dates,
+                datasets: myDatasets
+            },
+
+            // Configuration options go here
+            options: {
+                responsive: true,
+                layout: {
+
+                },
+                legend: {
+                    position: "top",
+                    align: "center",
+                    labels: {
+                        fontSize: 22,
+
+                    },
+
+                },
+                tooltips: {
+                    //mode: 'index',
+                    intersect: false,
+                    callbacks: {
+                        label: function (tooltipItem, data) {
+                            var label = data.datasets[tooltipItem.datasetIndex].label || '';
+                            var value = data.datasets[tooltipItem.datasetIndex].data;
+                            return label + ": " + tooltipItem.yLabel.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+                        }
+                    }
+
+                },
+                hover: {
+                    intersect: true
+                },
+                scales: {
+                    yAxes: [{
+                        display: true,
+                        position: 'right',
+                        scaleLabel: {
+                            show: true,
+                            labelString: '#'
+                        },
+                        gridLines: {
+                            drawBorder: false,
+                            color: 'rgba(85,85,85, .4)'
+                        },
+                        ticks: {
+                            padding: 10,
+
+                            callback: function (value, index, values) {
+                                return value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+                            }
+                        }
+                    }
+                    ],
+                    xAxes: [{
+                        display: true,
+                        ticks: {
+
+                        },
+                        scaleLabel: {
+                            show: true,
+                            labelString: 'Day'
+                        },
+                        gridLines: {
+                            drawBorder: false,
+                            color: 'rgba(85,85,85, .2)'
+                        }
+                    }]
+                }
+            }
+
+        });
+    }
+
+    function drawUSDeathCharts() {
+        var container = document.querySelector('.my-container');
+        Chart.defaults.global.defaultFontSize = 22;
+
+        var div = document.createElement('div');
+        div.classList.add('chart-container');
+
+        var canvas = document.createElement('canvas');
+
+        var h2 = document.createElement('h2');
+        h2.innerHTML = 'BETA - US States Deaths';
+
+        div.appendChild(h2);
+        div.appendChild(canvas);
+        container.appendChild(div);
+
+        var ctx = canvas.getContext('2d');
+        
+        targetStates = [
+            'New York',
+            'New Jersey',
+            'California',
+            'Michigan',
+            'Washington',
+            'Massachusetts',
+            'Illinois',
+            'Florida',
+            'Louisiana',
+            'Pennsylvania',
+            'Georgia',
+            'Texas',
+            'Colorado',
+            'Tennessee'
+        ];
+        dates = usStateDeathData[0].splice(1);
+        
+        myDatasets = getFilteredDatasetsByArrayKey(targetStates, usStateDeathData);
+
+
+        new Chart(ctx, {
+
+            type: 'line',
+
+            // The data for our dataset
+            data: {
+                labels: dates,
+                datasets: myDatasets
+            },
+
+            // Configuration options go here
+            options: {
+                responsive: true,
+                layout: {
+
+                },
+                legend: {
+                    position: "top",
+                    align: "center",
+                    labels: {
+                        fontSize: 22,
+
+                    },
+
+                },
+                tooltips: {
+                    //mode: 'index',
+                    intersect: false,
+                    callbacks: {
+                        label: function (tooltipItem, data) {
+                            var label = data.datasets[tooltipItem.datasetIndex].label || '';
+                            var value = data.datasets[tooltipItem.datasetIndex].data;
+                            return label + ": " + tooltipItem.yLabel.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+                        }
+                    }
+
+                },
+                hover: {
+                    intersect: true
+                },
+                scales: {
+                    yAxes: [{
+                        display: true,
+                        position: 'right',
+                        scaleLabel: {
+                            show: true,
+                            labelString: '#'
+                        },
+                        gridLines: {
+                            drawBorder: false,
+                            color: 'rgba(85,85,85, .4)'
+                        },
+                        ticks: {
+                            padding: 10,
+
+                            callback: function (value, index, values) {
+                                return value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+                            }
+                        }
+                    }
+                    ],
+                    xAxes: [{
+                        display: true,
+                        ticks: {
+
+                        },
+                        scaleLabel: {
+                            show: true,
+                            labelString: 'Day'
+                        },
+                        gridLines: {
+                            drawBorder: false,
+                            color: 'rgba(85,85,85, .2)'
+                        }
+                    }]
+                }
+            }
+
+        });
+    }
+
+    
+
     var confirmedDataFromGithub = '';
     var dateLabels;
 
@@ -843,6 +1124,8 @@
 
     var texasConfirmed;
     var texasCountiesConfirmed;
+
+    var usStateConfirmedData;
 
     $(document).ready(function () {
         $.when(
@@ -890,12 +1173,51 @@
                 success: function (data) {
                     texasCountyData = getTexasCountyDataFromArcGISJSON(data);
                 }
+            }),
+            $.ajax({
+                type: "GET",
+                url: "https://raw.githubusercontent.com/odessacoding/odessacoding.github.io/master/data-sources/cdc-daily-reports/aggregates/confirmed-03-28-2020.csv",
+                dataType: "text",
+                success: function (data) {
+                    usStateConfirmedData = parseUSStateData(data);
+                }
+            }),
+            $.ajax({
+                type: "GET",
+                url: "https://raw.githubusercontent.com/odessacoding/odessacoding.github.io/master/data-sources/cdc-daily-reports/aggregates/death-03-28-2020.csv",
+                dataType: "text",
+                success: function (data) {
+                    usStateDeathData = parseUSStateData(data);
+                }
+            }),
+            $.ajax({
+                type: "GET",
+                url: "https://raw.githubusercontent.com/odessacoding/odessacoding.github.io/master/data-sources/cdc-daily-reports/aggregates/recovered-03-28-2020.csv",
+                dataType: "text",
+                success: function (data) {
+                    usStateRecoveredData = parseUSStateData(data);
+                }
             })
 
         ).then(function () {
             drawMyChart(confirmedCases, fatalityCases, recoveredCases);
+            drawUSConfirmedCharts();
+            drawUSDeathCharts()
             renderDates();
         })
+
+        
+
+        function parseUSStateData(data) {
+            var result = $.csv.toArrays(data); // an array of arrays (or list of lists)
+
+            for(var i = 1; i < result.length; ++i) {
+                for( var j = 1; j < result[i].length; ++j) {
+                    result[i][j] = parseInt(result[i][j]) || 0
+                }
+            }
+            return result;
+        }
 
         function getTexasConfirmedByDate(data) {
             countyData = getTexasConfirmedByCountyAndDate(data);
