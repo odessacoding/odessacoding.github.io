@@ -1176,7 +1176,7 @@
             }),
             $.ajax({
                 type: "GET",
-                url: "https://raw.githubusercontent.com/odessacoding/odessacoding.github.io/master/data-sources/cdc-daily-reports/aggregates/confirmed-03-28-2020.csv",
+                url: "https://raw.githubusercontent.com/odessacoding/odessacoding.github.io/master/data-sources/cdc-daily-reports/aggregates/confirmed-latest.csv",
                 dataType: "text",
                 success: function (data) {
                     usStateConfirmedData = parseUSStateData(data);
@@ -1184,7 +1184,7 @@
             }),
             $.ajax({
                 type: "GET",
-                url: "https://raw.githubusercontent.com/odessacoding/odessacoding.github.io/master/data-sources/cdc-daily-reports/aggregates/death-03-28-2020.csv",
+                url: "https://raw.githubusercontent.com/odessacoding/odessacoding.github.io/master/data-sources/cdc-daily-reports/aggregates/death-latest.csv",
                 dataType: "text",
                 success: function (data) {
                     usStateDeathData = parseUSStateData(data);
@@ -1192,7 +1192,7 @@
             }),
             $.ajax({
                 type: "GET",
-                url: "https://raw.githubusercontent.com/odessacoding/odessacoding.github.io/master/data-sources/cdc-daily-reports/aggregates/recovered-03-28-2020.csv",
+                url: "https://raw.githubusercontent.com/odessacoding/odessacoding.github.io/master/data-sources/cdc-daily-reports/aggregates/recovered-latest.csv",
                 dataType: "text",
                 success: function (data) {
                     usStateRecoveredData = parseUSStateData(data);
