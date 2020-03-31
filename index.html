@@ -420,8 +420,12 @@
 
         var h2 = document.createElement('h2');
         h2.innerHTML = 'West Texas Relevant';
+        
+        var p = document.createElement('p');
+        p.innerHTML('Source: Texas Department of State Health Services');
 
         div.appendChild(h2);
+        div.appendChild(p);
         div.appendChild(canvas);
         container.appendChild(div);
 
@@ -601,8 +605,13 @@
 
         var h2 = document.createElement('h2');
         h2.innerHTML = 'Texas Confirmed Cases';
+        
+        var p = document.createElement('p');
+        p.innerHTML('Source: Texas Department of State Health Services');
 
         div.appendChild(h2);
+        div.appendChild(p);
+
         div.appendChild(canvas);
         container.appendChild(div);
 
@@ -731,9 +740,13 @@
             div.classList.add('chart-container');
 
             var canvas = document.createElement('canvas');
-
+            
+            console.log(key);
             var h2 = document.createElement('h2');
             h2.innerHTML = key;
+
+            // var p = document.createElement('p');
+            // p.innerHTML('Source: Texas Department of State Health Services');
 
             div.appendChild(h2);
             div.appendChild(canvas);
